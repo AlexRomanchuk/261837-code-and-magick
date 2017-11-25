@@ -26,23 +26,21 @@ function getRandData(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-var wizards = [];
-
-function pushElementArray(n) {
+var wizards = function (n) {
+  var arr = [];
   for (var i = 0; i < n; i++) {
-    wizards.push(
+    arr.push(
         {
           name: getRandData(WIZARD_NAMES) + ' ' + getRandData(WIZARD_FAMILIAS),
           coatColor: getRandData(COAT_COLORS),
           eyesColor: getRandData(EYE_COLORS)
         });
   }
-}
-
-pushElementArray(4);
+  return arr;
+};
 
 // Функция создания элемента для вывода на страницу
-function getNewElement(arrayName) {
+function createWizardElement(arrayName) {
   var newElement = similarWizardTemplate.cloneNode(true);
   newElement.querySelector('.setup-similar-label').textContent = arrayName.name;
   newElement.querySelector('.wizard-coat').style.fill = arrayName.coatColor;
@@ -51,7 +49,7 @@ function getNewElement(arrayName) {
 }
 
 // Функция отрисовки элемента
-function renderElement(arrayName, functionName) {
+function renderWizardsElements(arrayName, functionName) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < arrayName.length; i++) {
     fragment.appendChild(functionName(arrayName[i]));
@@ -59,6 +57,6 @@ function renderElement(arrayName, functionName) {
   similarListElement.appendChild(fragment);
 }
 
-renderElement(wizards, getNewElement);
+renderWizardsElements(wizards(4), createWizardElement);
 
 showBlock('.setup-similar');
