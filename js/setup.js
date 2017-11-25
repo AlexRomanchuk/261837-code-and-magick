@@ -22,47 +22,36 @@ var similarListElement = setupWindow.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
 // Функция выбора случайного элемента массива
-function randData(arr) {
+function getRandData(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
-var wizards = [
-  {
-    name: randData(WIZARD_NAMES) + ' ' + randData(WIZARD_FAMILIAS),
-    coatColor: randData(COAT_COLORS),
-    eyesColor: randData(EYE_COLORS)
-  },
-  {
-    name: randData(WIZARD_NAMES) + ' ' + randData(WIZARD_FAMILIAS),
-    coatColor: randData(COAT_COLORS),
-    eyesColor: randData(EYE_COLORS)
-  },
-  {
-    name: randData(WIZARD_NAMES) + ' ' + randData(WIZARD_FAMILIAS),
-    coatColor: randData(COAT_COLORS),
-    eyesColor: randData(EYE_COLORS)
-  },
-  {
-    name: randData(WIZARD_NAMES) + ' ' + randData(WIZARD_FAMILIAS),
-    coatColor: randData(COAT_COLORS),
-    eyesColor: randData(EYE_COLORS)
+var wizards = [];
+
+function pushElementArray(n) {
+  for (var i = 0; i < n; i++) {
+    wizards.push(
+        {
+          name: getRandData(WIZARD_NAMES) + ' ' + getRandData(WIZARD_FAMILIAS),
+          coatColor: getRandData(COAT_COLORS),
+          eyesColor: getRandData(EYE_COLORS)
+        });
   }
-];
+}
+
+pushElementArray(4);
 
 // Функция создания элемента для вывода на страницу
 function getNewElement(arrayName) {
-  var parameter1 = arrayName.name;
-  var parameter2 = arrayName.coatColor;
-  var parameter3 = arrayName.eyesColor;
   var newElement = similarWizardTemplate.cloneNode(true);
-  newElement.querySelector('.setup-similar-label').textContent = parameter1;
-  newElement.querySelector('.wizard-coat').style.fill = parameter2;
-  newElement.querySelector('.wizard-eyes').style.fill = parameter3;
+  newElement.querySelector('.setup-similar-label').textContent = arrayName.name;
+  newElement.querySelector('.wizard-coat').style.fill = arrayName.coatColor;
+  newElement.querySelector('.wizard-eyes').style.fill = arrayName.eyesColor;
   return newElement;
 }
 
 // Функция отрисовки элемента
-function getDomElement(arrayName, functionName) {
+function renderElement(arrayName, functionName) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < arrayName.length; i++) {
     fragment.appendChild(functionName(arrayName[i]));
@@ -70,6 +59,6 @@ function getDomElement(arrayName, functionName) {
   similarListElement.appendChild(fragment);
 }
 
-getDomElement(wizards, getNewElement);
+renderElement(wizards, getNewElement);
 
 showBlock('.setup-similar');
