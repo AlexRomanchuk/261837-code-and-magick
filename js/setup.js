@@ -1,10 +1,56 @@
 ﻿'use strict';
 
+// Коды клавиш
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 // Контстанты: массивы данных о волшебниках
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
 var WIZARD_FAMILIAS = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
 var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
 var EYE_COLORS = ['black', 'blue', 'yellow', 'green', 'red'];
+
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+setupOpen.querySelector('.setup-open-icon').tabIndex = 0;
+setupClose.tabIndex = 0;
+
+var onPopupEscPress = function(evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closePopup();
+  }
+};
+
+var openPopup = function() {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function() {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+setupOpen.addEventListener('click', function() {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function() {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
 
 var setupWindow = document.querySelector('.setup');
 
@@ -14,7 +60,23 @@ function showBlock(nameSelector) {
   setupWindow.classList.remove('hidden');
 }
 
-showBlock('.setup');
+var userNameInput = setup.querySelector('.setup-user-name');
+
+function validatyForm() {
+  userNameInput.addEventListener('invalid', function (evt) {
+    switch (evt) {
+      case userNameInput.validity.tooShort:
+      userNameInput.setCustomValidity('Имя должно содержать минимум 2 символа!');
+      break;
+      case userNameInput.validity.tooLong:
+      userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов!');
+      break;
+      case userNameInput.validity.valueMissing:
+      userNameInput.setCustomValidity('Обязательно заполните! Без имени не принимаем.');
+      break;
+    }
+  });
+}
 
 var similarListElement = setupWindow.querySelector('.setup-similar-list');
 
