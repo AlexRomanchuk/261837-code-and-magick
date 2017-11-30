@@ -25,8 +25,11 @@ var setupClose = setup.querySelector('.setup-close');
 var coatColor = setup.querySelector('.setup-wizard .wizard-coat');
 var eyesColor = setup.querySelector('.setup-wizard .wizard-eyes');
 var fireballColor = setup.querySelector('.setup-fireball-wrap .setup-fireball');
+var userNameInput = setup.querySelector('.setup-user-name');
+var submitForm = setup.querySelector('.setup-wizard-form');
 setupOpen.querySelector('.setup-open-icon').tabIndex = TABINDEX;
 setupClose.tabIndex = TABINDEX;
+submitForm.action = 'https://js.dump.academy/code-and-magick';
 
 var openPopup = function() {
   setup.classList.remove('hidden');
@@ -39,9 +42,11 @@ var closePopup = function() {
 };
 
 var onPopupEscPress = function (evt) {
+  userNameInput.addEventListener('focus', function(evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    closePopup();
+    (userNameInput.focus) ? validityForm() : closePopup();
   }
+  });
 };
 
 setupOpen.addEventListener('click', function() {
@@ -64,10 +69,9 @@ setupClose.addEventListener('keydown', function (evt) {
   }
 });
 
-// Генерация случайного целого числа
-function getRandomNumber(num1, num2) {
-  return (Math.floor(Math.random() * (num2 - num1 + 1)) + num1);
-}
+userNameInput.addEventListener('focus', function(evt) {
+    validityForm();
+});
 
 // Функции настройки цветов элементов игры
 function setColor(elementName, arrayName) {
@@ -76,7 +80,7 @@ function setColor(elementName, arrayName) {
   }
 
   elementName.addEventListener('click', function() {
-    setElementColor(arrayName[getRandomNumber(0, arrayName.length - 1)]);
+    setElementColor(getRandData(arrayName));
   });
 }
 
@@ -89,7 +93,7 @@ function setFireballColor(elementName, arrayName) {
   }
 
   elementName.addEventListener('click', function() {
-    setElementColor(arrayName[getRandomNumber(0, arrayName.length - 1)]);
+    setElementColor(getRandData(arrayName));
   });
 }
 
@@ -104,25 +108,28 @@ function showBlock(nameSelector) {
 }
 
 // Валидация поля для имени
-var userNameInput = setup.querySelector('.setup-user-name');
 userNameInput.minLength = MIN_LENGTH;
 
-userNameInput.addEventListener('invalid', function (evt) {
- if (userNameInput.validity.tooShort) {
-    userNameInput.setCustomValidity('Имя должно содержать минимум 2 символа!');
-  } else if (userNameInput.validity.tooLong) {
+function validityForm() {
+  userNameInput.addEventListener('invalid', function (evt) {
+    if (userNameInput.validity.tooShort) {
+      userNameInput.setCustomValidity('Имя должно содержать минимум 2 символа!');
+    } else if (userNameInput.validity.tooLong) {
       userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов!');
-  } else if (userNameInput.validity.valueMissing) {
+    } else if (userNameInput.validity.valueMissing) {
       userNameInput.setCustomValidity('Обязательно заполните! Без имени не принимаем.');
-  } else {
+    } else {
       userNameInput.setCustomValidity('');
-  }
-});
+    }
+  });
 
-userNameInput.addEventListener('input', function (evt) {
-  var target = evt.target;
-  (target.value.length < 2) ? target.setCustomValidity('Имя должно содержать минимум 2 символа!') : target.setCustomValidity('');
-});
+  userNameInput.addEventListener('input', function (evt) {
+    var target = evt.target;
+    (target.value.length < 2) ? target.setCustomValidity('Имя должно содержать минимум 2 символа!') : target.setCustomValidity('');
+  });
+}
+
+validityForm();
 
 var similarListElement = setupWindow.querySelector('.setup-similar-list');
 
