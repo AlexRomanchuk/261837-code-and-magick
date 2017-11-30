@@ -3,8 +3,6 @@
 // Коды клавиш и значения свойств html
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
-var MIN_LENGTH = 2;
-var TABINDEX = 0;
 
 // Контстанты: массивы данных о волшебниках
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
@@ -27,10 +25,6 @@ var coat = setup.querySelector('.setup-wizard .wizard-coat');
 var eyes = setup.querySelector('.setup-wizard .wizard-eyes');
 var fireball = setup.querySelector('.setup-fireball-wrap');
 var userNameInput = setup.querySelector('.setup-user-name');
-var submitForm = setup.querySelector('.setup-wizard-form');
-setupOpen.querySelector('.setup-open-icon').tabIndex = TABINDEX;
-setupClose.tabIndex = TABINDEX;
-submitForm.action = 'https://js.dump.academy/code-and-magick';
 
 var openPopup = function () {
   setup.classList.remove('hidden');
@@ -42,14 +36,23 @@ var closePopup = function () {
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
-// Закрытие окна с проверкой поля на фокус. Если есть фокус, окно не закрывается.
+var focused = false;
+
+userNameInput.addEventListener('focus', function () {
+  focused = true;
+  return focused;
+});
+
+userNameInput.addEventListener('blur', function () {
+  focused = false;
+  return focused;
+});
+
 var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    if (userNameInput.activeElement) {
-      validityForm();
-    } else {
-      closePopup();
-    }
+  if (evt.keyCode === ESC_KEYCODE && !focused) {
+    closePopup();
+  } else {
+    validityForm();
   }
 };
 
@@ -95,7 +98,7 @@ var setFireballColor = function (fireBallColors) {
 };
 
 fireball.addEventListener('click', function () {
-    setFireballColor(getRandData(FIREBALL_COLORS));
+  setFireballColor(getRandData(FIREBALL_COLORS));
 });
 
 
@@ -108,8 +111,6 @@ function showBlock(nameSelector) {
 }
 
 // Валидация поля для имени
-userNameInput.minLength = MIN_LENGTH;
-
 function validityForm() {
   userNameInput.addEventListener('invalid', function () {
     if (userNameInput.validity.tooShort) {
@@ -125,7 +126,10 @@ function validityForm() {
 
   userNameInput.addEventListener('input', function (evt) {
     var target = evt.target;
-    (target.value.length < 2) ? target.setCustomValidity('Имя должно содержать минимум 2 символа!') : ('');
+    var minSimbols = target.value.length;
+    var errMessage = '';
+    errMessage = minSimbols < 2 ? 'Имя должно содержать минимум 2 символа!' : '';
+    target.setCustomValidity(errMessage);
   });
 }
 
