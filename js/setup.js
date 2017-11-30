@@ -8,23 +8,24 @@ var TABINDEX = 0;
 
 // Контстанты: массивы данных о волшебниках
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var WIZARD_FAMILIAS = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLORS = ['rgb(101, 137, 164)',
+var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = [
+  'rgb(101, 137, 164)',
   'rgb(241, 43, 107)',
   'rgb(146, 100, 161)',
   'rgb(56, 159, 117)',
   'rgb(215, 210, 55)',
   'rgb(0, 0, 0)'
 ];
-var EYE_COLORS = ['black', 'blue', 'yellow', 'green', 'red'];
-var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+var EYES_COLORS = ['black', 'blue', 'yellow', 'green', 'red'];
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
 var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
-var coatColor = setup.querySelector('.setup-wizard .wizard-coat');
-var eyesColor = setup.querySelector('.setup-wizard .wizard-eyes');
-var fireballColor = setup.querySelector('.setup-fireball-wrap');
+var coat = setup.querySelector('.setup-wizard .wizard-coat');
+var eyes = setup.querySelector('.setup-wizard .wizard-eyes');
+var fireball = setup.querySelector('.setup-fireball-wrap');
 var userNameInput = setup.querySelector('.setup-user-name');
 var submitForm = setup.querySelector('.setup-wizard-form');
 setupOpen.querySelector('.setup-open-icon').tabIndex = TABINDEX;
@@ -40,15 +41,6 @@ var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
 };
-
-// Обработка собитый focus и blur. Активация и деактивация поля.
-userNameInput.addEventListener('focus', function () {
-  userNameInput.activeElement = true;
-});
-
-userNameInput.addEventListener('blur', function () {
-  userNameInput.activeElement = false;
-});
 
 // Закрытие окна с проверкой поля на фокус. Если есть фокус, окно не закрывается.
 var onPopupEscPress = function (evt) {
@@ -82,30 +74,30 @@ setupClose.addEventListener('keydown', function (evt) {
 });
 
 // Функции настройки цветов элементов игры
-function setColor(elementName, arrColors) {
-  var setElementColor = function (colors) {
-    elementName.style.fill = colors;
-  };
+var setCoatColor = function (coatColors) {
+  coat.style.fill = coatColors;
+};
 
-  elementName.addEventListener('click', function () {
-    setElementColor(getRandData(arrColors));
-  });
-}
+coat.addEventListener('click', function () {
+  setCoatColor(getRandData(COAT_COLORS));
+});
 
-setColor(coatColor, COAT_COLORS);
-setColor(eyesColor, EYE_COLORS);
+var setEyesColor = function (eyesColors) {
+  eyes.style.fill = eyesColors;
+};
 
-function setFireballColor(elementName, arrColors) {
-  var setElementColor = function (fireBallColors) {
-    elementName.style.backgroundColor = fireBallColors;
-  };
+eyes.addEventListener('click', function () {
+  setEyesColor(getRandData(EYES_COLORS));
+});
 
-  elementName.addEventListener('click', function () {
-    setElementColor(getRandData(arrColors));
-  });
-}
+var setFireballColor = function (fireBallColors) {
+  fireball.style.backgroundColor = fireBallColors;
+};
 
-setFireballColor(fireballColor, FIREBALL_COLOR);
+fireball.addEventListener('click', function () {
+    setFireballColor(getRandData(FIREBALL_COLORS));
+});
+
 
 var setupWindow = document.querySelector('.setup');
 
@@ -133,11 +125,7 @@ function validityForm() {
 
   userNameInput.addEventListener('input', function (evt) {
     var target = evt.target;
-    if (target.value.length < 2) {
-      target.setCustomValidity('Имя должно содержать минимум 2 символа!');
-    } else {
-      target.setCustomValidity('');
-    }
+    (target.value.length < 2) ? target.setCustomValidity('Имя должно содержать минимум 2 символа!') : ('');
   });
 }
 
@@ -158,9 +146,9 @@ var wizards = function (n) {
   for (var i = 0; i < n; i++) {
     arr.push(
         {
-          name: getRandData(WIZARD_NAMES) + ' ' + getRandData(WIZARD_FAMILIAS),
+          name: getRandData(WIZARD_NAMES) + ' ' + getRandData(WIZARD_SURNAMES),
           coatColor: getRandData(COAT_COLORS),
-          eyesColor: getRandData(EYE_COLORS)
+          eyesColor: getRandData(EYES_COLORS)
         });
   }
   return arr;
