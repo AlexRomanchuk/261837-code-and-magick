@@ -24,32 +24,44 @@ var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
 var coatColor = setup.querySelector('.setup-wizard .wizard-coat');
 var eyesColor = setup.querySelector('.setup-wizard .wizard-eyes');
-var fireballColor = setup.querySelector('.setup-fireball-wrap .setup-fireball');
+var fireballColor = setup.querySelector('.setup-fireball-wrap');
 var userNameInput = setup.querySelector('.setup-user-name');
 var submitForm = setup.querySelector('.setup-wizard-form');
 setupOpen.querySelector('.setup-open-icon').tabIndex = TABINDEX;
 setupClose.tabIndex = TABINDEX;
 submitForm.action = 'https://js.dump.academy/code-and-magick';
 
-var openPopup = function() {
+var openPopup = function () {
   setup.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
 };
 
-var closePopup = function() {
+var closePopup = function () {
   setup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupEscPress);
 };
 
+// Обработка собитый focus и blur. Активация и деактивация поля.
+userNameInput.addEventListener('focus', function () {
+  userNameInput.activeElement = true;
+});
+
+userNameInput.addEventListener('blur', function () {
+  userNameInput.activeElement = false;
+});
+
+// Закрытие окна с проверкой поля на фокус. Если есть фокус, окно не закрывается.
 var onPopupEscPress = function (evt) {
-  userNameInput.addEventListener('focus', function(evt) {
   if (evt.keyCode === ESC_KEYCODE) {
-    (userNameInput.focus) ? validityForm() : closePopup();
+    if (userNameInput.activeElement) {
+      validityForm();
+    } else {
+      closePopup();
+    }
   }
-  });
 };
 
-setupOpen.addEventListener('click', function() {
+setupOpen.addEventListener('click', function () {
   openPopup();
 });
 
@@ -59,7 +71,7 @@ setupOpen.addEventListener('keydown', function (evt) {
   }
 });
 
-setupClose.addEventListener('click', function() {
+setupClose.addEventListener('click', function () {
   closePopup();
 });
 
@@ -69,31 +81,27 @@ setupClose.addEventListener('keydown', function (evt) {
   }
 });
 
-userNameInput.addEventListener('focus', function(evt) {
-    validityForm();
-});
-
 // Функции настройки цветов элементов игры
-function setColor(elementName, arrayName) {
-  var setElementColor = function (arrayName) {
-    elementName.style.fill = arrayName;
-  }
+function setColor(elementName, arrColors) {
+  var setElementColor = function (colors) {
+    elementName.style.fill = colors;
+  };
 
-  elementName.addEventListener('click', function() {
-    setElementColor(getRandData(arrayName));
+  elementName.addEventListener('click', function () {
+    setElementColor(getRandData(arrColors));
   });
 }
 
 setColor(coatColor, COAT_COLORS);
 setColor(eyesColor, EYE_COLORS);
 
-function setFireballColor(elementName, arrayName) {
-  var setElementColor = function (arrayName) {
-    elementName.style.backgroundColor = arrayName;
-  }
+function setFireballColor(elementName, arrColors) {
+  var setElementColor = function (fireBallColors) {
+    elementName.style.backgroundColor = fireBallColors;
+  };
 
-  elementName.addEventListener('click', function() {
-    setElementColor(getRandData(arrayName));
+  elementName.addEventListener('click', function () {
+    setElementColor(getRandData(arrColors));
   });
 }
 
@@ -111,13 +119,13 @@ function showBlock(nameSelector) {
 userNameInput.minLength = MIN_LENGTH;
 
 function validityForm() {
-  userNameInput.addEventListener('invalid', function (evt) {
+  userNameInput.addEventListener('invalid', function () {
     if (userNameInput.validity.tooShort) {
       userNameInput.setCustomValidity('Имя должно содержать минимум 2 символа!');
     } else if (userNameInput.validity.tooLong) {
       userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов!');
     } else if (userNameInput.validity.valueMissing) {
-      userNameInput.setCustomValidity('Обязательно заполните! Без имени не принимаем.');
+      userNameInput.setCustomValidity('Без имени не принимаем!');
     } else {
       userNameInput.setCustomValidity('');
     }
@@ -125,7 +133,11 @@ function validityForm() {
 
   userNameInput.addEventListener('input', function (evt) {
     var target = evt.target;
-    (target.value.length < 2) ? target.setCustomValidity('Имя должно содержать минимум 2 символа!') : target.setCustomValidity('');
+    if (target.value.length < 2) {
+      target.setCustomValidity('Имя должно содержать минимум 2 символа!');
+    } else {
+      target.setCustomValidity('');
+    }
   });
 }
 
