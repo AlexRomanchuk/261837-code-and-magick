@@ -1,10 +1,106 @@
 ﻿'use strict';
 
+// Коды клавиш и значения свойств html
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 // Контстанты: массивы данных о волшебниках
 var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var WIZARD_FAMILIAS = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLORS = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-var EYE_COLORS = ['black', 'blue', 'yellow', 'green', 'red'];
+var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = [
+  'rgb(101, 137, 164)',
+  'rgb(241, 43, 107)',
+  'rgb(146, 100, 161)',
+  'rgb(56, 159, 117)',
+  'rgb(215, 210, 55)',
+  'rgb(0, 0, 0)'
+];
+var EYES_COLORS = ['black', 'blue', 'yellow', 'green', 'red'];
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupClose = setup.querySelector('.setup-close');
+var coat = setup.querySelector('.setup-wizard .wizard-coat');
+var eyes = setup.querySelector('.setup-wizard .wizard-eyes');
+var fireball = setup.querySelector('.setup-fireball-wrap');
+var userNameInput = setup.querySelector('.setup-user-name');
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+var focused = false;
+
+userNameInput.addEventListener('focus', function () {
+  focused = true;
+  return focused;
+});
+
+userNameInput.addEventListener('blur', function () {
+  focused = false;
+  return focused;
+});
+
+var onPopupEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE && !focused) {
+    closePopup();
+  } else {
+    validityForm();
+  }
+};
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setupOpen.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    openPopup();
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
+
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    closePopup();
+  }
+});
+
+// Функции настройки цветов элементов игры
+var setCoatColor = function (coatColors) {
+  coat.style.fill = coatColors;
+};
+
+coat.addEventListener('click', function () {
+  setCoatColor(getRandData(COAT_COLORS));
+});
+
+var setEyesColor = function (eyesColors) {
+  eyes.style.fill = eyesColors;
+};
+
+eyes.addEventListener('click', function () {
+  setEyesColor(getRandData(EYES_COLORS));
+});
+
+var setFireballColor = function (fireBallColors) {
+  fireball.style.backgroundColor = fireBallColors;
+};
+
+fireball.addEventListener('click', function () {
+  setFireballColor(getRandData(FIREBALL_COLORS));
+});
+
 
 var setupWindow = document.querySelector('.setup');
 
@@ -14,7 +110,30 @@ function showBlock(nameSelector) {
   setupWindow.classList.remove('hidden');
 }
 
-showBlock('.setup');
+// Валидация поля для имени
+function validityForm() {
+  userNameInput.addEventListener('invalid', function () {
+    if (userNameInput.validity.tooShort) {
+      userNameInput.setCustomValidity('Имя должно содержать минимум 2 символа!');
+    } else if (userNameInput.validity.tooLong) {
+      userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов!');
+    } else if (userNameInput.validity.valueMissing) {
+      userNameInput.setCustomValidity('Без имени не принимаем!');
+    } else {
+      userNameInput.setCustomValidity('');
+    }
+  });
+
+  userNameInput.addEventListener('input', function (evt) {
+    var target = evt.target;
+    var minSimbols = target.value.length;
+    var errMessage = '';
+    errMessage = minSimbols < 2 ? 'Имя должно содержать минимум 2 символа!' : '';
+    target.setCustomValidity(errMessage);
+  });
+}
+
+validityForm();
 
 var similarListElement = setupWindow.querySelector('.setup-similar-list');
 
@@ -31,9 +150,9 @@ var wizards = function (n) {
   for (var i = 0; i < n; i++) {
     arr.push(
         {
-          name: getRandData(WIZARD_NAMES) + ' ' + getRandData(WIZARD_FAMILIAS),
+          name: getRandData(WIZARD_NAMES) + ' ' + getRandData(WIZARD_SURNAMES),
           coatColor: getRandData(COAT_COLORS),
-          eyesColor: getRandData(EYE_COLORS)
+          eyesColor: getRandData(EYES_COLORS)
         });
   }
   return arr;
