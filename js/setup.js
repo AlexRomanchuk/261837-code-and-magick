@@ -1,30 +1,26 @@
 ﻿'use strict';
 
-// Коды клавиш и значения свойств html
+// файл util.js
+
+// Коды клавиш
 var ESC_KEYCODE = 27;
 var ENTER_KEYCODE = 13;
-
-// Контстанты: массивы данных о волшебниках
-var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-var COAT_COLORS = [
-  'rgb(101, 137, 164)',
-  'rgb(241, 43, 107)',
-  'rgb(146, 100, 161)',
-  'rgb(56, 159, 117)',
-  'rgb(215, 210, 55)',
-  'rgb(0, 0, 0)'
-];
-var EYES_COLORS = ['black', 'blue', 'yellow', 'green', 'red'];
-var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-
 var setup = document.querySelector('.setup');
+var setupWindow = document.querySelector('.setup');
+var userNameInput = setup.querySelector('.setup-user-name');
 var setupOpen = document.querySelector('.setup-open');
 var setupClose = setup.querySelector('.setup-close');
-var coat = setup.querySelector('.setup-wizard .wizard-coat');
-var eyes = setup.querySelector('.setup-wizard .wizard-eyes');
-var fireball = setup.querySelector('.setup-fireball-wrap');
-var userNameInput = setup.querySelector('.setup-user-name');
+
+// Функция показа элементов
+function showBlock(nameSelector) {
+  setupWindow = document.querySelector(nameSelector);
+  setupWindow.classList.remove('hidden');
+}
+
+// Функция выбора случайного элемента массива
+function getRandData(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 var openPopup = function () {
   setup.classList.remove('hidden');
@@ -76,39 +72,10 @@ setupClose.addEventListener('keydown', function (evt) {
   }
 });
 
-// Функции настройки цветов элементов игры
-var setCoatColor = function (coatColors) {
-  coat.style.fill = coatColors;
-};
+// файл dialog.js
 
-coat.addEventListener('click', function () {
-  setCoatColor(getRandData(COAT_COLORS));
-});
-
-var setEyesColor = function (eyesColors) {
-  eyes.style.fill = eyesColors;
-};
-
-eyes.addEventListener('click', function () {
-  setEyesColor(getRandData(EYES_COLORS));
-});
-
-var setFireballColor = function (fireBallColors) {
-  fireball.style.backgroundColor = fireBallColors;
-};
-
-fireball.addEventListener('click', function () {
-  setFireballColor(getRandData(FIREBALL_COLORS));
-});
-
-
-var setupWindow = document.querySelector('.setup');
-
-// Функция показа элементов
-function showBlock(nameSelector) {
-  setupWindow = document.querySelector(nameSelector);
-  setupWindow.classList.remove('hidden');
-}
+// Шаблон
+var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
 // Валидация поля для имени
 function validityForm() {
@@ -135,15 +102,52 @@ function validityForm() {
 
 validityForm();
 
+// файл colorize.js
+
+// Контстанты: массивы данных о волшебниках
+var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
+var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
+var COAT_COLORS = [
+  'rgb(101, 137, 164)',
+  'rgb(241, 43, 107)',
+  'rgb(146, 100, 161)',
+  'rgb(56, 159, 117)',
+  'rgb(215, 210, 55)',
+  'rgb(0, 0, 0)'
+];
+var EYES_COLORS = ['black', 'blue', 'yellow', 'green', 'red'];
+var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+
+var coat = setup.querySelector('.setup-wizard .wizard-coat');
+var eyes = setup.querySelector('.setup-wizard .wizard-eyes');
+var fireball = setup.querySelector('.setup-fireball-wrap');
+
+// Функции настройки цветов элементов игры
+var setCoatColor = function (coatColors) {
+  coat.style.fill = coatColors;
+};
+
+coat.addEventListener('click', function () {
+  setCoatColor(getRandData(COAT_COLORS));
+});
+
+var setEyesColor = function (eyesColors) {
+  eyes.style.fill = eyesColors;
+};
+
+eyes.addEventListener('click', function () {
+  setEyesColor(getRandData(EYES_COLORS));
+});
+
+var setFireballColor = function (fireBallColors) {
+  fireball.style.backgroundColor = fireBallColors;
+};
+
+fireball.addEventListener('click', function () {
+  setFireballColor(getRandData(FIREBALL_COLORS));
+});
+
 var similarListElement = setupWindow.querySelector('.setup-similar-list');
-
-// Шаблон
-var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
-// Функция выбора случайного элемента массива
-function getRandData(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
 
 var wizards = function (n) {
   var arr = [];
