@@ -6,8 +6,6 @@
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = setup.querySelector('.setup-close');
 
-  window.validityForm;
-
   var openPopup = function () {
     setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
@@ -49,8 +47,6 @@
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === window.util.escKeyCode && !focused) {
       closePopup();
-    } else {
-      window.validityForm;
     }
   };
 

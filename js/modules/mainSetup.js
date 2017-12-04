@@ -19,5 +19,5 @@ window.mainSetup = (function () {
     setupWindow: SETUP_WINDOW,
     setup: SETUP,
     wizard: SETUP.querySelector('.wizard')
-  }
+  };
 })();

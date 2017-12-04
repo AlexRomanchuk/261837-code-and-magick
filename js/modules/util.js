@@ -17,12 +17,12 @@ window.util = (function () {
         action();
       }
     },
-    getRandData: function(arr) {
+    getRandData: function (arr) {
       return arr[Math.floor(Math.random() * arr.length)];
     },
     showBlock: function (nameSelector) {
       var setupWindow = document.querySelector(nameSelector);
       setupWindow.classList.remove('hidden');
     }
-  }
+  };
 })();
