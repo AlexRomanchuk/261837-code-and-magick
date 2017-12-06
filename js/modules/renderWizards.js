@@ -1,8 +1,6 @@
 ﻿'use strict';
 
 (function () {
-  var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
   var similarListElement = window.mainSetup.setup.querySelector('.setup-similar-list');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
@@ -11,7 +9,7 @@
     for (var i = 0; i < n; i++) {
       arr.push(
           {
-            name: window.util.getRandData(WIZARD_NAMES) + ' ' + window.util.getRandData(WIZARD_SURNAMES),
+            name: window.util.getRandData(window.mainSetup.wizardNames) + ' ' + window.util.getRandData(window.mainSetup.wizardSurnames),
             coatColor: window.util.getRandData(window.mainSetup.coatColors),
             eyesColor: window.util.getRandData(window.mainSetup.eyesColors)
           }

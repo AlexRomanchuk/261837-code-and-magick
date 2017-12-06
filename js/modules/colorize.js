@@ -6,7 +6,6 @@
   var coat = setup.querySelector('.setup-wizard .wizard-coat');
   var eyes = setup.querySelector('.setup-wizard .wizard-eyes');
   var fireball = setup.querySelector('.setup-fireball-wrap');
-  var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
   // Функции настройки цветов элементов игры
   var setCoatColor = function (coatColors) {
@@ -30,6 +29,6 @@
   };
 
   fireball.addEventListener('click', function () {
-    setFireballColor(window.util.getRandData(FIREBALL_COLORS));
+    setFireballColor(window.util.getRandData(window.mainSetup.fireballColors));
   });
 })();
