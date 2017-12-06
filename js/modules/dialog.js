@@ -1,18 +1,16 @@
 ﻿'use strict';
 
 (function () {
-  var setup = window.mainSetup.setup;
-  var userNameInput = window.mainSetup.userNameInput;
   var setupOpen = document.querySelector('.setup-open');
-  var setupClose = setup.querySelector('.setup-close');
+  var setupClose = window.mainSetup.setup.querySelector('.setup-close');
 
   var openPopup = function () {
-    setup.classList.remove('hidden');
+    window.mainSetup.setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
   };
 
   var closePopup = function () {
-    setup.classList.add('hidden');
+    window.mainSetup.setup.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
@@ -34,21 +32,49 @@
 
   var focused = false;
 
-  userNameInput.addEventListener('focus', function () {
+  window.mainSetup.userNameInput.addEventListener('focus', function () {
     focused = true;
     return focused;
   });
 
-  userNameInput.addEventListener('blur', function () {
+  window.mainSetup.userNameInput.addEventListener('blur', function () {
     focused = false;
     return focused;
   });
 
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === window.util.escKeyCode && !focused) {
+    if (evt.keyCode === window.mainSetup.escKeycode && !focused) {
       closePopup();
     }
   };
 
+  {
+  // Функции настройки цветов элементов игры
+  var setCoatColor = function (coatColors) {
+    window.mainSetup.coat.style.fill = coatColors;
+  };
+
+  window.mainSetup.coat.addEventListener('click', function () {
+    setCoatColor(window.util.getRandData(window.mainSetup.coatColors));
+  });
+
+  var setEyesColor = function (eyesColors) {
+    window.mainSetup.eyes.style.fill = eyesColors;
+  };
+
+  window.mainSetup.eyes.addEventListener('click', function () {
+    setEyesColor(window.util.getRandData(window.mainSetup.eyesColors));
+  });
+
+  var setFireballColor = function (fireBallColors) {
+    window.mainSetup.fireball.style.backgroundColor = fireBallColors;
+  };
+
+  window.mainSetup.fireball.addEventListener('click', function () {
+    setFireballColor(window.util.getRandData(window.mainSetup.fireballColors));
+  });
+  }
+
   window.util.showBlock('.setup-similar');
+  window.util.validityForm();
 })();

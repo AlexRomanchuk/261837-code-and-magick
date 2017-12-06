@@ -2,7 +2,6 @@
 
 (function () {
   var similarListElement = window.mainSetup.setup.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
   function wizards(n) {
     var arr = [];
@@ -19,7 +18,7 @@
   }
 
   function createWizardElement(arrayName) {
-    var newElement = similarWizardTemplate.cloneNode(true);
+    var newElement = window.mainSetup.template.cloneNode(true);
     newElement.querySelector('.setup-similar-label').textContent = arrayName.name;
     newElement.querySelector('.wizard-coat').style.fill = arrayName.coatColor;
     newElement.querySelector('.wizard-eyes').style.fill = arrayName.eyesColor;
@@ -35,5 +34,4 @@
   }
 
   renderWizardsElements(wizards(4), createWizardElement);
-
 })();

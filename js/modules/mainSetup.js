@@ -4,7 +4,6 @@ window.mainSetup = (function () {
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
   var SETUP = document.querySelector('.setup');
-  var SETUP_WINDOW = document.querySelector('.setup');
   var USER_NAME_INPUT = SETUP.querySelector('.setup-user-name');
   var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
   var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
@@ -18,18 +17,21 @@ window.mainSetup = (function () {
     'rgb(215, 210, 55)',
     'rgb(0, 0, 0)'
   ];
+  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
 
   return {
     coatColors: COAT_COLORS,
     eyesColors: EYES_COLORS,
     fireballColors: FIREBALL_COLORS,
     userNameInput: USER_NAME_INPUT,
-    setupWindow: SETUP_WINDOW,
     setup: SETUP,
-    wizard: SETUP.querySelector('.wizard'),
     wizardNames: WIZARD_NAMES,
     wizardSurnames: WIZARD_SURNAMES,
     enterKeycode: ENTER_KEYCODE,
-    escKeycode: ESC_KEYCODE
+    escKeycode: ESC_KEYCODE,
+    template: similarWizardTemplate,
+    coat: SETUP.querySelector('.setup-wizard .wizard-coat'),
+    eyes: SETUP.querySelector('.setup-wizard .wizard-eyes'),
+    fireball: SETUP.querySelector('.setup-fireball-wrap')
   };
 })();
