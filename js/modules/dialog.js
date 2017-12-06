@@ -48,7 +48,6 @@
     }
   };
 
-  {
   // Функции настройки цветов элементов игры
   var setCoatColor = function (coatColors) {
     window.mainSetup.coat.style.fill = coatColors;
@@ -73,7 +72,6 @@
   window.mainSetup.fireball.addEventListener('click', function () {
     setFireballColor(window.util.getRandData(window.mainSetup.fireballColors));
   });
-  }
 
   window.util.showBlock('.setup-similar');
   window.util.validityForm();
