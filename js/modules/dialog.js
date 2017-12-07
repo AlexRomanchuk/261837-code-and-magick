@@ -7,13 +7,13 @@
   var openPopup = function () {
     window.mainSetup.setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
+    window.mainSetup.setup.style.top = '';
+    window.mainSetup.setup.style.left = '';
   };
 
   var closePopup = function () {
     window.mainSetup.setup.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
-    window.mainSetup.setup.style.top = '';
-    window.mainSetup.setup.style.left = '';
   };
 
   setupOpen.addEventListener('click', function () {
