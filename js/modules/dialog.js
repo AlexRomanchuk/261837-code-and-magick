@@ -12,6 +12,8 @@
   var closePopup = function () {
     window.mainSetup.setup.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
+    window.mainSetup.setup.style.top = '';
+    window.mainSetup.setup.style.left = '';
   };
 
   setupOpen.addEventListener('click', function () {
@@ -96,4 +98,43 @@
       target.setCustomValidity(errMessage);
     });
   })();
+
+  var dialogHandle = window.mainSetup.setup.querySelector('.setup-user-pic');
+  dialogHandle.style.zIndex = 1;
+
+  dialogHandle.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var drag = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY,
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      window.mainSetup.setup.style.top = (window.mainSetup.setup.offsetTop - drag.y) + 'px';
+      window.mainSetup.setup.style.left = (window.mainSetup.setup.offsetLeft - drag.x) + 'px';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 })();
