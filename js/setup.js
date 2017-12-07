@@ -1,35 +1,41 @@
-'use strict';
-
-var cellElement = document.querySelector('.setup-artifacts-cell');
+﻿'use strict';
 var shopElement = document.querySelector('.setup-artifacts-shop');
-var draggedItem = null;
+var cellElement = document.querySelector('.setup-artifacts-cell');
+var draggedItems = cellElement.querySelectorAll('img');
 var cellsArtifacts = document.querySelector('.setup-artifacts');
 
-shopElement.addEventListener('dragstart', function (evt) {
-  if (evt.target.tagName.toLowerCase() === 'img') {
-    draggedItem = evt.target;
-    evt.dataTransfer.setData('text/plain', evt.target.alt);
-  }
-});
+for (var i = 0; i < draggedItems.length; i++) {
+  // Все элементы в .setup-artifacts-cell и .setup-artifacts-shop получают draggable=true
+  draggedItems[i].draggable = true;
 
-cellsArtifacts.addEventListener('dragover', function (evt) {
-  evt.preventDefault();
-  return false;
-});
+  (function (index) {
+    shopElement.addEventListener('dragstart', function (evt) {
+      evt.dataTransfer.setData('text/plain', draggedItems[index].alt);
+    });
 
-cellsArtifacts.addEventListener('drop', function (evt) {
-  cellElement.style.backgroundColor = '';
-  evt.target.appendChild(draggedItem);
-  evt.preventDefault();
-});
+    cellsArtifacts.addEventListener('dragover', function (evt) {
+      evt.preventDefault();
+      return false;
+    });
 
-cellsArtifacts.addEventListener('dragenter', function (evt) {
-  cellElement.style.backgroundColor = 'yellow';
-  evt.preventDefault();
-});
+    cellsArtifacts.addEventListener('drop', function (evt) {
+      evt.target.style.backgroundColor = '';
+      evt.target.appendChild(draggedItems[index]);
+      evt.preventDefault();
+      evt.preventDefault();
+      return true;
+    });
 
-cellsArtifacts.addEventListener('dragleave', function (evt) {
-  cellElement.style.backgroundColor = '';
-  evt.preventDefault();
-});
+    cellsArtifacts.addEventListener('dragenter', function (evt) {
+      cellsArtifacts.style.outline = '2px dashed red';
+      evt.target.style.backgroundColor = 'yellow';
+      evt.preventDefault();
+    });
 
+    cellsArtifacts.addEventListener('dragleave', function (evt) {
+      cellsArtifacts.style.outline = '';
+      evt.target.style.backgroundColor = '';
+      evt.preventDefault();
+    });
+  })(i);
+}
