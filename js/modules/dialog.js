@@ -7,6 +7,8 @@
   var openPopup = function () {
     window.mainSetup.setup.classList.remove('hidden');
     document.addEventListener('keydown', onPopupEscPress);
+    window.mainSetup.setup.style.top = '';
+    window.mainSetup.setup.style.left = '';
   };
 
   var closePopup = function () {
@@ -96,4 +98,42 @@
       target.setCustomValidity(errMessage);
     });
   })();
+
+  var dialogHandle = window.mainSetup.setup.querySelector('.setup-user-pic');
+  dialogHandle.style.zIndex = 1;
+
+  dialogHandle.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    window.startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var drag = {
+      x: window.startCoords.x - moveEvt.clientX,
+      y: window.startCoords.y - moveEvt.clientY,
+    };
+
+    window.startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    window.mainSetup.setup.style.top = (window.mainSetup.setup.offsetTop - drag.y) + 'px';
+    window.mainSetup.setup.style.left = (window.mainSetup.setup.offsetLeft - drag.x) + 'px';
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
 })();
