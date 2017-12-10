@@ -50,31 +50,6 @@
     }
   };
 
-  // Функции настройки цветов элементов игры
-  var setCoatColor = function (coatColors) {
-    window.mainSetup.coat.style.fill = coatColors;
-  };
-
-  window.mainSetup.coat.addEventListener('click', function () {
-    setCoatColor(window.util.getRandData(window.mainSetup.coatColors));
-  });
-
-  var setEyesColor = function (eyesColors) {
-    window.mainSetup.eyes.style.fill = eyesColors;
-  };
-
-  window.mainSetup.eyes.addEventListener('click', function () {
-    setEyesColor(window.util.getRandData(window.mainSetup.eyesColors));
-  });
-
-  var setFireballColor = function (fireBallColors) {
-    window.mainSetup.fireball.style.backgroundColor = fireBallColors;
-  };
-
-  window.mainSetup.fireball.addEventListener('click', function () {
-    setFireballColor(window.util.getRandData(window.mainSetup.fireballColors));
-  });
-
   window.util.showBlock('.setup-similar');
 
   (function () {
