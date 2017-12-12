@@ -1,22 +1,33 @@
 ﻿'use ctrict';
-widow.backend = (function () {
+window.backend = (function () {
   return {
     load: function (onLoad, onError) {
-      var xhr = new XMLHttpRequest()
-      xhr.open(
-        'GET',
-        'https://1510.dump.academy/code-and-magick/data',
-        true
-      );
-      xhr.send()
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
 
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState !== 4) {
-          return 0;
+      xhr.timeout = 15000;
+
+      xhr.addEventListener('load', function () {
+      if (xhr.status === 200) {
+          onLoad(xhr.response);
+        } else {
+          onError('Неизвестный статус: ' + xhr.status + ' ' + xhr.statusText);
         }
-        console.log('end')
-      }
+      });
+
+      xhr.addEventListener('error', function () {
+        onError('Произошла ошибка соединения');
+      });
+
+      xhr.addEventListener('timeout', function () {
+        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      });
+
+      xhr.open('GET', 'https://1510.dump.academy/code-and-magick/data');
+
+      xhr.send();
     },
+
     save: function (data, onLoad, onError) {
 
     }
