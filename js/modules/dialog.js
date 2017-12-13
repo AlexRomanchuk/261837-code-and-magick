@@ -74,6 +74,15 @@
     });
   })();
 
+  var wizardForm = window.mainSetup.setup.querySelector('.setup-wizard-form');
+
+  wizardForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(wizardForm), function () {
+      window.mainSetup.setup.classList.add('hidden');
+    });
+    evt.preventDefault();
+  }, window.messageError);
+
   var dialogHandle = window.mainSetup.setup.querySelector('.setup-user-pic');
   dialogHandle.style.zIndex = 1;
 
