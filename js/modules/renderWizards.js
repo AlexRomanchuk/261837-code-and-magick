@@ -21,11 +21,11 @@
     }
   }
 
-  var coatColor;
-  var eyesColor;
+  var coatColor = 0;
+  var eyesColor = 0;
   var wizards = [];
 
-  var getRank = function (wizard) {
+  function getRank(wizard) {
     var rank = 0;
 
     if (wizard.colorCoat === coatColor) {
@@ -38,7 +38,7 @@
     return rank;
   }
 
-  var namesComparator = function (left, right) {
+  function namesComparator(left, right) {
     if (left > right) {
       return 1;
     } else if (left < right) {
@@ -48,7 +48,7 @@
     }
   }
 
-  var updateWizards = function () {
+  function updateWizards() {
     render(wizards.sort(function (left, right) {
       var rankDiff = getRank(right) - getRank(left);
       if (rankDiff === 0) {
@@ -58,18 +58,14 @@
     }));
   }
 
-  var wizardElement = document.querySelector('.setup-wizard');
-
-  var wizardCoatElement = wizardElement.querySelector('.wizard-coat');
-  wizardCoatElement.addEventListener('click', function () {
+  window.mainSetup.coat.addEventListener('click', function () {
     var newColor = window.util.getRandData(window.mainSetup.coatColors);
     this.style.fill = newColor;
     coatColor = newColor;
     updateWizards();
   });
 
-  var wizardEyesElement = wizardElement.querySelector('.wizard-eyes');
-  wizardEyesElement.addEventListener('click', function () {
+  window.mainSetup.eyes.addEventListener('click', function () {
     var newColor = window.util.getRandData(window.mainSetup.eyesColors);
     this.style.fill = newColor;
     eyesColor = newColor;
