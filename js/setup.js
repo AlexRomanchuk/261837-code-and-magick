@@ -38,11 +38,6 @@ for (var i = 0; i < draggedItems.length; i++) {
       evt.preventDefault();
     });
 
-    // Функции настройки цветов элементов игры
-    var fillElement = function (elem, color) {
-      elem.style.fill = color;
-    };
-
     var changeElementBackground = function (elem, color) {
       elem.style.backgroundColor = color;
     };

@@ -27,14 +27,12 @@
 
   function getRank(wizard) {
     var rank = 0;
-
     if (wizard.colorCoat === coatColor) {
       rank += 2;
     }
     if (wizard.colorEyes === eyesColor) {
       rank += 1;
     }
-
     return rank;
   }
 
@@ -50,27 +48,23 @@
 
   function updateWizards() {
     render(wizards.sort(function (left, right) {
-      var rankDiff = getRank(right) - getRank(left);
-      if (rankDiff === 0) {
-        rankDiff = namesComparator(left.name, right.name);
+      var rankDifferency = getRank(right) - getRank(left);
+      if (rankDifferency === 0) {
+        rankDifferency = namesComparator(left.name, right.name);
       }
-      return rankDiff;
+      return rankDifferency;
     }));
   }
 
-  window.mainSetup.coat.addEventListener('click', function () {
-    var newColor = window.util.getRandData(window.mainSetup.coatColors);
-    this.style.fill = newColor;
-    coatColor = newColor;
-    updateWizards();
-  });
+  window.onEyesChange = function (color) {
+    eyesColor = color;
+    window.debounce(updateWizards);
+  };
 
-  window.mainSetup.eyes.addEventListener('click', function () {
-    var newColor = window.util.getRandData(window.mainSetup.eyesColors);
-    this.style.fill = newColor;
-    eyesColor = newColor;
-    updateWizards();
-  });
+  window.onCoatChange = function (color) {
+    coatColor = color;
+    window.debounce(updateWizards);
+  };
 
   function onSuccessLoad(data) {
     wizards = data;
