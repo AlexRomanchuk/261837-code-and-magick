@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 (function () {
+  var maximumWizards = 4;
   var similarListElement = window.mainSetup.setup.querySelector('.setup-similar-list');
 
   window.backend.load(onSuccessLoad, window.messageError);
@@ -14,7 +15,7 @@
   }
 
   function render(data) {
-    var takeNumber = data.length > 4 ? 4 : data.length;
+    var takeNumber = Math.min(data.length, maximumWizards);
     similarListElement.textContent = '';
     for (var i = 0; i < takeNumber; i++) {
       similarListElement.appendChild(createWizardElement(data[i]));
@@ -27,12 +28,10 @@
 
   function getRank(wizard) {
     var rank = 0;
-    if (wizard.colorCoat === coatColor) {
-      rank += 2;
-    }
-    if (wizard.colorEyes === eyesColor) {
-      rank += 1;
-    }
+    var x = (wizard.colorCoat === coatColor) ? 2 : 0;
+    rank += x;
+    var y = (wizard.colorEyes === eyesColor) ? 1 : 0;
+    rank += y;
     return rank;
   }
 
@@ -56,14 +55,16 @@
     }));
   }
 
+  var timer = 500;
+
   window.onEyesChange = function (color) {
     eyesColor = color;
-    window.debounce(updateWizards);
+    window.debounce(updateWizards, timer);
   };
 
   window.onCoatChange = function (color) {
     coatColor = color;
-    window.debounce(updateWizards);
+    window.debounce(updateWizards, timer);
   };
 
   function onSuccessLoad(data) {
