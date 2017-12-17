@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 (function () {
-  var maximumWizards = 4;
+  var MAXIMUM_WIZARDS = 4;
   var similarListElement = window.mainSetup.setup.querySelector('.setup-similar-list');
 
   window.backend.load(onSuccessLoad, window.messageError);
@@ -15,7 +15,7 @@
   }
 
   function render(data) {
-    var takeNumber = Math.min(data.length, maximumWizards);
+    var takeNumber = Math.min(data.length, MAXIMUM_WIZARDS);
     similarListElement.textContent = '';
     for (var i = 0; i < takeNumber; i++) {
       similarListElement.appendChild(createWizardElement(data[i]));
@@ -36,6 +36,7 @@
   }
 
   function namesComparator(left, right) {
+    // return left > right ? 1 : left < right ? -1 : 0; не проходит npm test
     if (left > right) {
       return 1;
     } else if (left < right) {
@@ -56,15 +57,17 @@
   }
 
   var timer = 500;
+  // Попробовал сделать по-другому - использовал замыкание: return function () {...}
+  var doWithDebounce = window.debounce(updateWizards, timer);
 
   window.onEyesChange = function (color) {
     eyesColor = color;
-    window.debounce(updateWizards, timer);
+    doWithDebounce();
   };
 
   window.onCoatChange = function (color) {
     coatColor = color;
-    window.debounce(updateWizards, timer);
+    doWithDebounce();
   };
 
   function onSuccessLoad(data) {
